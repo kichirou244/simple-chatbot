@@ -18,18 +18,18 @@ export default function ChatMessage({ msg, loading, setIsCopied }) {
 
   return (
     <div className="my-4 flex flex-col gap-2">
-      {msg.input && (
+      {msg.question && (
         <div className="flex items-end justify-end">
           <div className="bg-zinc-600 text-white px-4 py-2 rounded-2xl rounded-br-sm max-w-[70%] shadow-md text-sm break-words break-all">
-            {msg.input}
+            {msg.question}
           </div>
         </div>
       )}
 
-      {(loading || msg.output) && (
+      {(loading || msg.answer) && (
         <div className="flex items-end justify-start">
           <div className="bg-zinc-900 text-white px-4 py-2 rounded-2xl rounded-bl-sm max-w-[90%] shadow text-sm break-words">
-            {loading && !msg.output ? (
+            {loading && !msg.answer ? (
               <span className="flex space-x-1">
                 <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
                 <span className="w-2 h-2 bg-gray-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
@@ -37,7 +37,7 @@ export default function ChatMessage({ msg, loading, setIsCopied }) {
               </span>
             ) : (
               <ReactMarkdown
-                children={msg.output}
+                children={msg.answer}
                 remarkPlugins={[remarkBreaks, remarkGfm]}
                 components={{
                   code({ node, inline, className, children, ...props }) {
@@ -89,7 +89,7 @@ export default function ChatMessage({ msg, loading, setIsCopied }) {
                   p: ({ node, ...props }) => <p className="mb-2" {...props} />,
                 }}
               >
-                {msg.output}
+                {msg.answer}
               </ReactMarkdown>
             )}
           </div>

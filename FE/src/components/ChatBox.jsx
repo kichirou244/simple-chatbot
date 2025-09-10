@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import ChatInput from "./ChatInput";
 import ChatMessage from "./ChatMessage";
-import { generateResponse } from "../actions/gemini.action";
+import { askAI } from "../actions/ai.action";
 
 export default function ChatBox() {
   const [messages, setMessages] = useState([]);
@@ -9,14 +9,20 @@ export default function ChatBox() {
   const [isCopied, setIsCopied] = useState(false);
   const endRef = useRef(null);
 
-  const onSend = async (input) => {
+  const onSend = async (question) => {
     setLoading(true);
-    setMessages((prev) => [...prev, { input, output: "" }]);
+    setMessages((prev) => [...prev, { question, answer: "" }]);
+    const formData = {
+      model: "gemini-2.5-pro",
+      provider: "gemini",
+      question: question,
+    };
+
     try {
-      const response = await generateResponse(input);
+      const response = await askAI(formData);
       setMessages((prev) =>
         prev.map((msg, idx) =>
-          idx === prev.length - 1 ? { ...msg, output: response } : msg
+          idx === prev.length - 1 ? { ...msg, answer: response.answer } : msg
         )
       );
     } catch (error) {
@@ -24,7 +30,7 @@ export default function ChatBox() {
       setMessages((prev) =>
         prev.map((msg, idx) =>
           idx === prev.length - 1
-            ? { ...msg, output: "Error generating response." }
+            ? { ...msg, answer: "Error generating response." }
             : msg
         )
       );
