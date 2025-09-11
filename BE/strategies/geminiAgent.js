@@ -1,11 +1,11 @@
-import AIStrategy from "./aiStrategy.js";
+import AIAgent from "./aiAgent.js";
 import "dotenv/config";
 
 import { GoogleGenAI } from "@google/genai";
 const apiKey = process.env.GEMINI_API_KEY;
 const client = new GoogleGenAI({ apiKey: apiKey });
 
-class GeminiStrategy extends AIStrategy {
+class GeminiAgent extends AIAgent {
   async ask(model, question) {
     try {
       const response = await client.models.generateContent({
@@ -19,4 +19,4 @@ class GeminiStrategy extends AIStrategy {
     }
   }
 }
-export default GeminiStrategy;
+export default GeminiAgent;

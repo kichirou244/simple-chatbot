@@ -1,11 +1,11 @@
-import AIStrategy from "./aiStrategy.js";
+import AIAgent from "./aiAgent.js";
 import "dotenv/config";
 
 import OpenAI from "openai";
 const apiKey = process.env.OPENAI_API_KEY;
 const client = new OpenAI({ apiKey: apiKey });
 
-class OpenAIStrategy extends AIStrategy {
+class OpenAiAgent extends AIAgent {
   async ask(model, question) {
     try {
       const response = await client.responses.create({
@@ -20,4 +20,4 @@ class OpenAIStrategy extends AIStrategy {
   }
 }
 
-export default OpenAIStrategy;
+export default OpenAiAgent;

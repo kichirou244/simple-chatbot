@@ -1,7 +1,7 @@
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 export const askAI = async (formData) => {
-  const response = await fetch(`${baseUrl}/ai/ask`, {
+  const response = await fetch(`${baseUrl}/ai`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

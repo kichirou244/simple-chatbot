@@ -1,24 +1,23 @@
-import OpenAIStrategy from "../strategies/openAIStrategy.js";
-import GeminiStrategy from "../strategies/geminiStrategy.js";
+import OpenAiAgent from "../strategies/openAiAgent.js";
+import GeminiAgent from "../strategies/geminiAgent.js";
 import AIContext from "../contexts/aiContext.js";
 
-const strategies = {
-  openAI: new OpenAIStrategy(),
-  gemini: new GeminiStrategy(),
+const aiAgents = {
+  openAI: new OpenAiAgent(),
+  gemini: new GeminiAgent(),
 };
 
-const aiContext = new AIContext(strategies);
+const aiContext = new AIContext(aiAgents);
 
 export const askAI = async (req, res) => {
   try {
-    const { provider, model, question } = req.body;
+    const { aiAgent, model, question } = req.body;
 
-    if (provider && strategies[provider]) {
-      aiContext.setStrategy(strategies[provider]);
-    }
+    if (aiAgent && aiAgents[aiAgent]) aiContext.setStrategy(aiAgents[aiAgent]);
 
     const answer = await aiContext.ask(model, question);
-    if (answer.status !== 200)
+
+    if (answer.status)
       return res.status(answer.status).json({ message: answer.name });
 
     res.json({ model, question, answer });
