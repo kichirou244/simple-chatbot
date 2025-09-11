@@ -1,37 +1,13 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { SendOutlined } from "@ant-design/icons";
 
 const ChatInput = ({ onSend }) => {
   const [text, setText] = useState("");
-  const textareaRef = useRef(null);
-
-  const handleChange = (e) => {
-    setText(e.target.value);
-    autoResize();
-  };
-
-  const autoResize = () => {
-    const textarea = textareaRef.current;
-    if (textarea) {
-      textarea.style.height = "auto";
-      textarea.style.height = textarea.scrollHeight + "px";
-    }
-  };
 
   const handleSend = async () => {
     if (text.trim() !== "") {
       onSend(text);
       setText("");
-      if (textareaRef.current) {
-        textareaRef.current.style.height = "auto";
-      }
-    }
-  };
-
-  const handleKeyDown = (e) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      handleSend();
     }
   };
 
@@ -39,12 +15,20 @@ const ChatInput = ({ onSend }) => {
     <>
       <div className="flex w-full max-w-2xl items-center bg-zinc-800 rounded-2xl px-8 py-6 mt-8">
         <textarea
-          ref={textareaRef}
           className="flex-1 bg-transparent text-white text-sm outline-none resize-none min-h-[30px] max-h-[150px] placeholder:text-zinc-400"
-          placeholder="Hỏi Chatbot"
+          placeholder="Hỏi chatbot"
           value={text}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
+          onChange={(e) => setText(e.target.value)}
+          onInput={(e) => {
+            e.target.style.height = "auto";
+            e.target.style.height = `${e.target.scrollHeight}px`;
+          }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSend();
+            }
+          }}
           rows={1}
         />
         <button

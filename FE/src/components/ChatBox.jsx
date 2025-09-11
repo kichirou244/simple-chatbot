@@ -14,7 +14,7 @@ export default function ChatBox() {
     setMessages((prev) => [...prev, { question, answer: "" }]);
     const formData = {
       model: "gemini-2.5-pro",
-      provider: "gemini",
+      aiAgent: "gemini",
       question: question,
     };
 
