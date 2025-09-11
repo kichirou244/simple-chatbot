@@ -1,4 +1,4 @@
-class IAIService {
+class AIContext {
   constructor(strategy) {
     this.strategy = strategy;
   }
@@ -11,4 +11,4 @@ class IAIService {
     return this.strategy.ask(model, question);
   }
 }
-export default IAIService;
+export default AIContext;

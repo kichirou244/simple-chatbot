@@ -1,6 +1,7 @@
 import express from "express";
 import aiRoutes from "./routes/aiRoutes.js";
 import cors from "cors";
+const PORT = 8080;
 
 const app = express();
 
@@ -15,4 +16,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use("/ai", aiRoutes);
 
-export default app;
+
+app.listen(PORT, () => {
+  console.log(`✅ Server is running on http://localhost:${PORT}`);
+});

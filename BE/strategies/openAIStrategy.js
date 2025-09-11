@@ -1,18 +1,22 @@
-import IAIService from "../services/aiService.js";
+import AIStrategy from "./aiStrategy.js";
 import "dotenv/config";
 
 import OpenAI from "openai";
 const apiKey = process.env.OPENAI_API_KEY;
-const openAI = new OpenAI({ apiKey });
+const client = new OpenAI({ apiKey: apiKey });
 
-class OpenAIStrategy extends IAIService {
+class OpenAIStrategy extends AIStrategy {
   async ask(model, question) {
-    const response = await openAI.responses.create({
-      model: model,
-      input: question,
-    });
+    try {
+      const response = await client.responses.create({
+        model: model,
+        input: question,
+      });
 
-    return response.output_text;
+      return response.output_text;
+    } catch (error) {
+      return error.status;
+    }
   }
 }
 
