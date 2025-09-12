@@ -1,5 +1,5 @@
-class AIAgent {
+class AiAgent {
   async ask(model, question) {}
 }
 
-export default AIAgent;
+export default AiAgent;

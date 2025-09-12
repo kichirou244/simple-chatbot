@@ -1,15 +1,15 @@
 import OpenAiAgent from "../strategies/openAiAgent.js";
 import GeminiAgent from "../strategies/geminiAgent.js";
-import AIContext from "../contexts/aiContext.js";
+import AiContext from "../contexts/aiContext.js";
 
 const aiAgents = {
-  openAI: new OpenAiAgent(),
+  openai: new OpenAiAgent(),
   gemini: new GeminiAgent(),
 };
 
-const aiContext = new AIContext(aiAgents);
-
 export const askAI = async (req, res) => {
+  const aiContext = new AiContext(aiAgents);
+  
   try {
     const { aiAgent, model, question } = req.body;
 
@@ -20,7 +20,7 @@ export const askAI = async (req, res) => {
     if (answer.status)
       return res.status(answer.status).json({ message: answer.name });
 
-    res.json({ model, question, answer });
+    res.json({ question, answer });
   } catch (error) {
     res.status(500).json({ message: error.message || "Server Error" });
   }

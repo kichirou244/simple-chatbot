@@ -14,8 +14,14 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use("/ai", aiRoutes);
 
+app.use((req, res, next) => {
+  const now = new Date().toISOString();
+  console.log(`[${now}] ${req.method} ${req.originalUrl}`);
+  next();
+});
+
+app.use("/ai", aiRoutes);
 
 app.listen(PORT, () => {
   console.log(`✅ Server is running on http://localhost:${PORT}`);

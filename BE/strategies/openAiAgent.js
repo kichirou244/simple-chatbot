@@ -1,11 +1,11 @@
-import AIAgent from "./aiAgent.js";
+import AiAgent from "./aiAgent.js";
 import "dotenv/config";
 
 import OpenAI from "openai";
 const apiKey = process.env.OPENAI_API_KEY;
 const client = new OpenAI({ apiKey: apiKey });
 
-class OpenAiAgent extends AIAgent {
+class OpenAiAgent extends AiAgent {
   async ask(model, question) {
     try {
       const response = await client.responses.create({
