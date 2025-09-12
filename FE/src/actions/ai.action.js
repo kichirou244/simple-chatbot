@@ -9,6 +9,9 @@ export const askAI = async (formData) => {
     body: JSON.stringify(formData),
   });
 
+  if (!response.ok)
+    throw new Error(`API Error: ${response.status} ${response.statusText}`);
+
   const data = await response.json();
 
   return data;

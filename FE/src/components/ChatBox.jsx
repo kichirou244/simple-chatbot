@@ -1,20 +1,24 @@
 import React, { useEffect, useRef, useState } from "react";
 import ChatInput from "./ChatInput";
-import ChatMessage from "./ChatMessage";
+import Message from "./Message/Message";
 import { askAI } from "../actions/ai.action";
 
 export default function ChatBox() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [model, setModel] = useState({
+    model: "gemini-2.5-flash",
+    aiAgent: "gemini",
+  });
   const endRef = useRef(null);
 
   const onSend = async (question) => {
     setLoading(true);
     setMessages((prev) => [...prev, { question, answer: "" }]);
     const formData = {
-      model: "gemini-2.5-pro",
-      aiAgent: "gemini",
+      model: model.model,
+      aiAgent: model.aiAgent,
       question: question,
     };
 
@@ -26,7 +30,6 @@ export default function ChatBox() {
         )
       );
     } catch (error) {
-      console.error("Error generating response:", error);
       setMessages((prev) =>
         prev.map((msg, idx) =>
           idx === prev.length - 1
@@ -54,7 +57,7 @@ export default function ChatBox() {
       {messages.length > 0 && (
         <div className="flex-1 overflow-y-auto p-4 space-y-4 max-w-2xl mx-auto w-full">
           {messages.map((msg, index) => (
-            <ChatMessage
+            <Message
               key={index}
               msg={msg}
               loading={loading}
@@ -67,7 +70,7 @@ export default function ChatBox() {
 
       <div className="flex justify-center mb-6">
         <div className="w-full max-w-2xl mx-auto">
-          <ChatInput onSend={onSend} />
+          <ChatInput onSend={onSend} model={model} setModel={setModel} />
         </div>
       </div>
 
