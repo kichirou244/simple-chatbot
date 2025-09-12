@@ -1,30 +1,39 @@
 import React, { useEffect, useRef, useState } from "react";
 import ChatInput from "./ChatInput";
-import ChatMessage from "./ChatMessage";
-import { generateResponse } from "../actions/gemini.action";
+import Message from "./Message/Message";
+import { askAI } from "../actions/ai.action";
 
 export default function ChatBox() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
+  const [model, setModel] = useState({
+    model: "gemini-2.5-flash",
+    aiAgent: "gemini",
+  });
   const endRef = useRef(null);
 
-  const onSend = async (input) => {
+  const onSend = async (question) => {
     setLoading(true);
-    setMessages((prev) => [...prev, { input, output: "" }]);
+    setMessages((prev) => [...prev, { question, answer: "" }]);
+    const formData = {
+      model: model.model,
+      aiAgent: model.aiAgent,
+      question: question,
+    };
+
     try {
-      const response = await generateResponse(input);
+      const response = await askAI(formData);
       setMessages((prev) =>
         prev.map((msg, idx) =>
-          idx === prev.length - 1 ? { ...msg, output: response } : msg
+          idx === prev.length - 1 ? { ...msg, answer: response.answer } : msg
         )
       );
     } catch (error) {
-      console.error("Error generating response:", error);
       setMessages((prev) =>
         prev.map((msg, idx) =>
           idx === prev.length - 1
-            ? { ...msg, output: "Error generating response." }
+            ? { ...msg, answer: "Error generating response." }
             : msg
         )
       );
@@ -48,7 +57,7 @@ export default function ChatBox() {
       {messages.length > 0 && (
         <div className="flex-1 overflow-y-auto p-4 space-y-4 max-w-2xl mx-auto w-full">
           {messages.map((msg, index) => (
-            <ChatMessage
+            <Message
               key={index}
               msg={msg}
               loading={loading}
@@ -61,7 +70,7 @@ export default function ChatBox() {
 
       <div className="flex justify-center mb-6">
         <div className="w-full max-w-2xl mx-auto">
-          <ChatInput onSend={onSend} />
+          <ChatInput onSend={onSend} model={model} setModel={setModel} />
         </div>
       </div>
 
