@@ -1,21 +1,12 @@
-import OpenAiAgent from "../strategies/openAiAgent.js";
-import GeminiAgent from "../strategies/geminiAgent.js";
-import AiContext from "../contexts/aiContext.js";
-
-const aiAgents = {
-  openai: new OpenAiAgent(),
-  gemini: new GeminiAgent(),
-};
+import { AiAgentFactory } from "../strategies/aiAgentFactory.js";
 
 export const askAI = async (req, res) => {
-  const aiContext = new AiContext(aiAgents);
-  
   try {
     const { aiAgent, model, question } = req.body;
 
-    if (aiAgent && aiAgents[aiAgent]) aiContext.setStrategy(aiAgents[aiAgent]);
-
-    const answer = await aiContext.ask(model, question);
+    const agent = AiAgentFactory.create(aiAgent);
+    
+    const answer = await agent.ask(model, question);
 
     if (answer.status)
       return res.status(answer.status).json({ message: answer.name });
