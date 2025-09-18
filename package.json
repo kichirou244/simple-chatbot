@@ -1,0 +1,13 @@
+{
+  "private": true,
+  "workspaces": [
+    "BE",
+    "FE"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev --workspace=FE\" \"npm run start --workspace=BE\""
+  },
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

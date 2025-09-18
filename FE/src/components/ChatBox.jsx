@@ -33,7 +33,7 @@ export default function ChatBox() {
       setMessages((prev) =>
         prev.map((msg, idx) =>
           idx === prev.length - 1
-            ? { ...msg, answer: "Error generating response." }
+            ? { ...msg, answer: error.message || "Error generating response." }
             : msg
         )
       );
@@ -48,13 +48,7 @@ export default function ChatBox() {
 
   return (
     <div className="flex flex-col h-screen bg-black">
-      {messages.length === 0 && (
-        <div className="flex-1 flex justify-center items-center">
-          <p className="text-white text-2xl">Hi</p>
-        </div>
-      )}
-
-      {messages.length > 0 && (
+      {messages && messages.length > 0 ? (
         <div className="flex-1 overflow-y-auto p-4 space-y-4 max-w-2xl mx-auto w-full">
           {messages.map((msg, index) => (
             <Message
@@ -65,6 +59,10 @@ export default function ChatBox() {
             />
           ))}
           <div ref={endRef} />
+        </div>
+      ) : (
+        <div className="flex-1 flex justify-center items-center">
+          <p className="text-white text-2xl">Hi</p>
         </div>
       )}
 
