@@ -18,5 +18,14 @@ class GeminiAgent extends AiAgent {
       return error;
     }
   }
+  
+  async embedTexts(textChunk) {
+    const result = await client.models.embedContent({
+      model: "gemini-embedding-001",
+      contents: [textChunk],
+    });
+
+    return result.embeddings[0].values;
+  }
 }
 export default GeminiAgent;

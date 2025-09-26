@@ -1,11 +1,12 @@
 {
-  "private": true,
   "workspaces": [
     "BE",
-    "FE"
+    "FE",
+    "rag-pipeline"
   ],
   "scripts": {
-    "dev": "concurrently \"npm run dev --workspace=FE\" \"npm run start --workspace=BE\""
+    "dev": "concurrently \"npm run dev --workspace=FE\" \"npm run start --workspace=BE\"",
+    "start": "concurrently \"npm run start --workspace=rag-pipeline\""
   },
   "dependencies": {
     "concurrently": "^8.2.2"
